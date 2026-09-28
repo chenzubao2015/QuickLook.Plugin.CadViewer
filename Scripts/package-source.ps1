@@ -7,7 +7,7 @@ $include = @(
     ".gitignore",
     "LICENSE",
     "README.md",
-    "README.zh-CN.md",
+    "README_EN.md",
     "CHANGELOG.md",
     "CONTRIBUTING.md",
     "THIRD-PARTY-NOTICES.txt",

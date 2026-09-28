@@ -1,152 +1,145 @@
 # QuickLook.Plugin.CadViewer
 
-**English** | [中文说明](README.zh-CN.md)
+**中文** | [English](README_EN.md)
 
-A **QuickLook** plugin that previews 2D CAD drawings — **DXF** and **DWG** — with a simple
-spacebar, without opening AutoCAD and without uploading anything anywhere.
+一个 [QuickLook](https://github.com/QL-Win/QuickLook) 插件：按空格即可预览 **DXF / DWG** 二维图纸，
+不用打开 AutoCAD，也不会上传任何文件。
 
-![DXF preview](docs/screenshot-dxf.png)
+![DXF 预览](docs/screenshot-dxf.png)
 
-<p align="center"><em>Left-click drag to pan, wheel to zoom. The button and author link stay out of the way in the bottom-left corner.</em></p>
+<p align="center"><em>左键拖动平移，滚轮缩放；按钮与作者信息固定在左下角，不遮挡图纸。</em></p>
 
-## Features
+## 功能
 
-- **DXF and DWG in one plugin.** `.dxf` is rendered by a WebGL renderer; `.dwg` is decoded locally
-  by LibreDWG compiled to WebAssembly.
-- **Zoom and pan.** Wheel zoom keeps the point under the cursor in place, so you can zoom
-  straight into a detail. Left-click drag moves the sheet around to reveal whatever a zoomed
-  view pushed off screen.
-- **Fit button** returns to the whole sheet after you have moved around.
-- **Fully offline.** The drawing never leaves the machine, and no external service is contacted.
-- **Layer fidelity for DXF.** Layers, colours, blocks, hatches, dimensions and text are rendered.
-- **Readable on a light background.** Colours that would be invisible on white are darkened
-  automatically, keeping their hue.
-- **Text without shipping fonts.** Glyphs come from fonts already installed on Windows
-  (Segoe UI / Arial, plus SimHei / SimKai / SimFang for Chinese drawings), loaded on demand.
-- **Path safe.** Drawings in folders with spaces or non-ASCII characters open correctly.
-- **Light and dark aware UI**, high-DPI friendly.
+- **一个插件同时支持 DXF 与 DWG**。`.dxf` 由 WebGL 渲染；`.dwg` 由编译为 WebAssembly 的
+  LibreDWG 在本地解码。
+- **缩放与平移**。滚轮以光标位置为中心缩放，可直接放大到某个细节；左键拖动移动图纸，
+  查看放大后被移出画面的内容。
+- **“适合”按钮**：移动后一键回到整图视图。
+- **完全离线**。图纸不会离开本机，不访问任何外部服务。
+- **DXF 图层保真**。图层、颜色、块、填充、标注与文字都会渲染。
+- **浅色背景下清晰**。过亮的线色会自动压暗并保留色相，避免白底白线。
+- **不携带字体文件**。文字使用系统已安装字体（Segoe UI / Arial，以及 SimHei、SimKai、SimFang 等中文字体），
+  按需加载。
+- **路径安全**。图纸位于含空格或中文的目录下也能正常预览。
 
-## Installation
+## 安装
 
-1. Download `QuickLook.Plugin.CadViewer.qlplugin` from the
-   [latest release](../../releases/latest).
-2. With QuickLook running, select the downloaded file and press <kbd>Space</kbd>.
-3. Click **Install**, then restart QuickLook.
-4. Select any `.dxf` or `.dwg` file and press <kbd>Space</kbd>.
+1. 从 [最新发布](../../releases/latest) 下载 `QuickLook.Plugin.CadViewer.qlplugin`。
+2. 保持 QuickLook 运行，选中该文件并按 <kbd>空格</kbd>。
+3. 点击 **Install**，然后重启 QuickLook。
+4. 选中任意 `.dxf` 或 `.dwg` 文件并按 <kbd>空格</kbd> 预览。
 
-**Requirements:** QuickLook 4.x, Windows 10/11, and the Microsoft Edge WebView2 Runtime
-(already present on most Windows 10/11 systems).
+**环境要求**：QuickLook 4.x、Windows 10/11、Microsoft Edge WebView2 运行时
+（多数 Windows 10/11 已自带）。
 
-## Usage
+## 操作方式
 
-| Action | Result |
+| 操作 | 效果 |
 | --- | --- |
-| Mouse wheel | Zoom in / out around the cursor |
-| Left-click drag | Pan the drawing |
-| **Fit** button | Restore the whole-sheet view |
+| 鼠标滚轮 | 以光标为中心缩放 |
+| 按住左键拖动 | 平移图纸 |
+| **适合** 按钮 | 恢复整图视图 |
 
-## Supported formats
+## 支持的格式
 
-| Extension | Format | Renderer |
+| 扩展名 | 格式 | 渲染方式 |
 | --- | --- | --- |
-| `.dxf` | AutoCAD Drawing Exchange Format | WebGL renderer (blocks, hatches, dimensions, text) |
-| `.dwg` | AutoCAD binary drawing | LibreDWG (WebAssembly) decoded to vector output |
+| `.dxf` | AutoCAD Drawing Exchange Format | WebGL 渲染（块、填充、标注、文字） |
+| `.dwg` | AutoCAD 二进制图纸 | LibreDWG（WebAssembly）解码为矢量后渲染 |
 
-## How it works
+## 实现原理
 
-The plugin is a thin WPF host around a self-contained web view:
+插件本体是一个很薄的 WPF 宿主，真正的工作由内嵌网页完成：
 
-1. `Plugin.cs` implements QuickLook's `IViewer` and claims `.dxf` / `.dwg`.
-2. `CadViewerPanel.cs` hosts WebView2 and exposes three virtual hosts — the viewer assets, the
-   folder containing the drawing, and the Windows font folder — so the page can read files
-   without any temporary copies and without file-system access from script.
-3. `Web/app.src.js` renders the drawing and owns all interaction. DXF goes through
-   [dxf-viewer](https://github.com/vagran/dxf-viewer); DWG is decoded by
-   [libredwg-web](https://github.com/mlightcad/libredwg-web) and drawn as vector geometry.
+1. `Plugin.cs` 实现 QuickLook 的 `IViewer`，声明 `.dxf` / `.dwg`。
+2. `CadViewerPanel.cs` 承载 WebView2，并映射三个虚拟主机——预览资源目录、图纸所在目录、
+   Windows 字体目录，使页面无需复制临时文件即可读取图纸。
+3. `Web/app.src.js` 负责渲染与全部交互。DXF 由
+   [dxf-viewer](https://github.com/vagran/dxf-viewer) 渲染；DWG 由
+   [libredwg-web](https://github.com/mlightcad/libredwg-web) 解码后以矢量绘制。
 
-Because everything is local, previewing a customer drawing does not disclose it.
+因为全部在本地完成，预览客户图纸不会造成图纸外泄。
 
-## Building from source
+## 从源码构建
 
-**Prerequisites:** Node.js 18+, .NET 8 SDK (used to build the .NET Framework 4.6.2 plugin),
-Windows.
+**依赖**：Node.js 18+、.NET 8 SDK（用于构建目标为 .NET Framework 4.6.2 的插件）、Windows。
 
 ```powershell
 git clone https://github.com/chenzubao2015/QuickLook.Plugin.CadViewer.git
 cd QuickLook.Plugin.CadViewer
 
-# Produces QuickLook.Plugin.CadViewer.qlplugin
+# 生成 QuickLook.Plugin.CadViewer.qlplugin
 powershell -ExecutionPolicy Bypass -File .\Scripts\pack.ps1
 
-# Or just build into Build\Release without packaging
+# 或仅构建到 Build\Release，不打包
 powershell -ExecutionPolicy Bypass -File .\Scripts\build.ps1
 ```
 
-The build installs the npm dependencies, copies the LibreDWG WebAssembly module into
-`Web/vendor`, bundles `Web/app.src.js` with esbuild, and compiles the C# plugin.
+构建过程会安装 npm 依赖、把 LibreDWG 的 WebAssembly 模块复制到 `Web/vendor`、
+用 esbuild 打包 `Web/app.src.js`，最后编译 C# 插件。
 
 ```
 QuickLook.Plugin.CadViewer/
-├── Plugin.cs                       IViewer implementation (file extensions, lifecycle)
-├── CadViewerPanel.cs               WebView2 host, virtual-host mapping, font discovery
+├── Plugin.cs                       IViewer 实现（扩展名与生命周期）
+├── CadViewerPanel.cs               WebView2 宿主、虚拟主机映射、字体探测
 ├── Web/
-│   ├── index.html, app.css         Preview UI
-│   ├── app.src.js                  Rendering, zoom, pan, colour adaptation (source)
-│   └── app.js                      esbuild output (generated)
-├── Scripts/                        build / pack / source-package scripts
-├── tools/make-demo-dxf.py          Regenerates the demo drawing used in the screenshots
-└── docs/                           Screenshots and the demo drawing
+│   ├── index.html, app.css         预览界面
+│   ├── app.src.js                  渲染、缩放、平移、颜色适配（源码）
+│   └── app.js                      esbuild 产物（生成）
+├── Scripts/                        构建 / 打包 / 源码打包脚本
+├── tools/make-demo-dxf.py          生成截图所用演示图纸
+└── docs/                           截图与演示图纸
 ```
 
-## Known limitations
+## 已知限制
 
-- DWG decoding relies on LibreDWG, which supports a large but not complete subset of entities.
-  Table entities (`ACAD_TABLE`) abort its converter, so they are skipped before conversion;
-  the rest of the drawing still renders. `MLINE`, `MULTILEADER` and `3DSOLID` may be incomplete.
-- If a drawing contains an entity far away from the main geometry, the fit view honours the true
-  extents and the main content appears small — zoom in to inspect it.
-- DXF rendering is the higher-fidelity path; for best results prefer DXF over DWG when both are
-  available.
-- Annotations using SHX-only big fonts are drawn with the installed TrueType fallback, so glyph
-  shapes can differ from AutoCAD.
+- DWG 解码依赖 LibreDWG，其支持的实体集合并不完整。表格实体（`ACAD_TABLE`）会使其转换器
+  中断，因此转换前会被跳过，图纸其余内容仍正常显示；`MLINE`、`MULTILEADER`、`3DSOLID`
+  等实体可能显示不完整。
+- 若图纸存在远离主体图形的离群实体，整图视图会以真实范围为准，主体内容因此显得较小，
+  可放大查看。
+- DXF 渲染保真度高于 DWG；两者都有时建议优先使用 DXF。
+- 使用 SHX 大字体的标注将使用系统 TrueType 字体回退，字形可能与 AutoCAD 不同。
 
-## Troubleshooting
+## 常见问题
 
-**The preview stays on the loading screen.** Make sure the Microsoft Edge WebView2 Runtime is
-installed, then restart QuickLook completely from the system tray.
+**一直停留在加载界面。** 请确认已安装 Microsoft Edge WebView2 运行时，然后从系统托盘完全
+退出并重启 QuickLook。
 
-**"无法预览此 CAD 文件" / "Cannot preview this CAD file".** The message under the title explains
-the cause. Very old or very new DWG versions may not be supported by LibreDWG.
+**提示“无法预览此 CAD 文件”。** 标题下方的信息会说明原因。过旧或过新的 DWG 版本可能不被
+LibreDWG 支持。
 
-**Text is missing or shows boxes.** The drawing uses a font that is not installed. Install the
-font referenced by the drawing, or ask for a DXF export.
+**文字缺失或显示为方框。** 图纸使用的字体未安装。安装图纸所引用的字体，或请对方提供 DXF。
 
-**A stale layout appears after updating.** The viewer bypasses the cache itself; if you still see
-an old version, exit QuickLook from the tray icon rather than just closing the preview.
+**更新后仍是旧界面。** 预览页面已自行绕过缓存；若仍显示旧版本，请从托盘图标退出 QuickLook，
+而不是仅关闭预览窗口。
 
-## Contributing
+## 参与贡献
 
-Issues and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
+欢迎提交 Issue 与 Pull Request，详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-## Credits
+## 致谢
 
-Built on the shoulders of these projects:
+本插件基于以下开源项目：
 
-- [QuickLook](https://github.com/QL-Win/QuickLook) — the preview host
-- [dxf-viewer](https://github.com/vagran/dxf-viewer) — DXF rendering (MPL-2.0)
-- [LibreDWG](https://github.com/LibreDWG/libredwg) and
-  [libredwg-web](https://github.com/mlightcad/libredwg-web) — DWG decoding (GPL-3.0)
-- [three.js](https://github.com/mrdoob/three.js) (MIT), [opentype.js](https://github.com/opentypejs/opentype.js) (MIT),
-  [earcut](https://github.com/mapbox/earcut) (ISC), [loglevel](https://github.com/pimterry/loglevel) (MIT)
+- [QuickLook](https://github.com/QL-Win/QuickLook) —— 预览宿主
+- [dxf-viewer](https://github.com/vagran/dxf-viewer) —— DXF 渲染（MPL-2.0）
+- [LibreDWG](https://github.com/LibreDWG/libredwg) 与
+  [libredwg-web](https://github.com/mlightcad/libredwg-web) —— DWG 解码（GPL-3.0）
+- [three.js](https://github.com/mrdoob/three.js)（MIT）、
+  [opentype.js](https://github.com/opentypejs/opentype.js)（MIT）、
+  [earcut](https://github.com/mapbox/earcut)（ISC）、
+  [loglevel](https://github.com/pimterry/loglevel)（MIT）
 
-Inspired by [QuickLook.Plugin.CADImport](https://github.com/emako/QuickLook.Plugin.CADImport),
-which takes a different (commercial-library) approach to the same problem.
+思路参考了 [QuickLook.Plugin.CADImport](https://github.com/emako/QuickLook.Plugin.CADImport)，
+该项目用商业库解决同一问题，本插件改用全开源方案。
 
-## License
+## 许可证
 
-GPL-3.0, because the bundled LibreDWG WebAssembly component is GPL-3.0. See [LICENSE](LICENSE)
-and [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt).
+GPL-3.0，因为内置的 LibreDWG WebAssembly 组件为 GPL-3.0。详见 [LICENSE](LICENSE) 与
+[THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt)。
 
-## Author
+## 作者
 
 [@chenzubao2015](https://github.com/chenzubao2015)
