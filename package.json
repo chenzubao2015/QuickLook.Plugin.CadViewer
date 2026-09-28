@@ -1,0 +1,11 @@
+{
+  "name": "quicklook-plugin-cadviewer-assets",
+  "private": true,
+  "version": "1.0.0",
+  "devDependencies": {
+    "@mlightcad/libredwg-web": "0.7.14",
+    "dxf-viewer": "1.0.49",
+    "esbuild": "0.25.10",
+    "three": "0.186.1"
+  }
+}

@@ -1,0 +1,32 @@
+# Build output
+bin/
+obj/
+Build/
+*.qlplugin
+*.zip
+
+# Node
+node_modules/
+node-compile-cache/
+
+# Generated at build time by Scripts/build.ps1
+Web/vendor/
+Web/app.js
+
+# Local toolchain used by the build script when the .NET SDK is not installed system-wide
+.dotnet/
+
+# Local test drawings and harness output
+testdata/
+probe.cjs
+probe.mjs
+fontprobe.mjs
+timing*.mjs
+bundletest.js
+bundletest.out.js
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo

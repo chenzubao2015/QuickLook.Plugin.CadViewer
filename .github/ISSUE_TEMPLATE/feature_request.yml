@@ -1,0 +1,31 @@
+name: Feature request
+description: Suggest a workflow the plugin does not cover yet
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describing the workflow you have in mind is more useful than describing an
+        implementation — it lets us pick the approach that fits the plugin.
+  - type: textarea
+    id: workflow
+    attributes:
+      label: What are you trying to do?
+      description: Describe the task, not the solution.
+      placeholder: e.g. "I need to check a dimension on a drawing a customer sent me."
+    validations:
+      required: true
+  - type: textarea
+    id: today
+    attributes:
+      label: What do you do today?
+      description: How do you currently work around the missing feature?
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false

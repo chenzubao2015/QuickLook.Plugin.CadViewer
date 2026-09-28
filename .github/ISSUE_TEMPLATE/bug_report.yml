@@ -1,0 +1,67 @@
+name: Bug report
+description: A drawing does not render correctly, or the preview misbehaves
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Rendering issues are almost always fixable, but only with a
+        drawing that reproduces them.
+  - type: input
+    id: format
+    attributes:
+      label: File format
+      description: Which format were you previewing?
+      placeholder: DXF / DWG
+    validations:
+      required: true
+  - type: input
+    id: cad-version
+    attributes:
+      label: Drawing's AutoCAD version
+      description: Shown by your CAD software, or the `$ACADVER` value in a DXF.
+      placeholder: e.g. AutoCAD 2018, R12
+    validations:
+      required: false
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: Describe what you expected and what you saw. Screenshots are welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: reproducer
+    attributes:
+      label: Drawing that reproduces it
+      description: |
+        Attach the drawing, or a cut-down version that still shows the problem. If it is
+        confidential, describe the entity types involved instead — that alone often identifies
+        the cause.
+    validations:
+      required: false
+  - type: input
+    id: quicklook-version
+    attributes:
+      label: QuickLook version
+      placeholder: e.g. 4.0.3
+    validations:
+      required: true
+  - type: input
+    id: windows-version
+    attributes:
+      label: Windows version
+      placeholder: e.g. Windows 11 23H2
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Plugin log
+      description: |
+        Open it from the QuickLook tray icon menu (*Settings → View log*) and paste anything
+        mentioning `CadViewer`.
+      render: text
+    validations:
+      required: false

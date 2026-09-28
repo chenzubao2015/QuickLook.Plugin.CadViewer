@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CAD Viewer</title>
+  <link rel="stylesheet" href="app.css?v=1.0.0">
+</head>
+<body>
+  <div id="stage"></div>
+  <div id="loading">
+    <div class="spinner"></div>
+    <strong id="status">正在准备图纸…</strong>
+    <span id="hint">较大的 CAD 图纸需要一些解析时间</span>
+  </div>
+  <div id="error" hidden>
+    <strong>无法预览此 CAD 文件</strong>
+    <span id="error-text"></span>
+  </div>
+  <div id="panel">
+    <button id="fit" title="适合窗口">适合</button>
+  </div>
+  <a id="author" href="https://github.com/chenzubao2015" target="_blank" rel="noopener noreferrer">@chenzubao2015</a>
+  <script type="module" src="app.js?v=1.0.0"></script>
+</body>
+</html>

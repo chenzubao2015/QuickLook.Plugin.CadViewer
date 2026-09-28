@@ -1,0 +1,43 @@
+Third-party components bundled with QuickLook.Plugin.CadViewer
+
+1. dxf-viewer
+   Copyright (c) Artyom Lebedev and contributors
+   License: Mozilla Public License 2.0 (MPL-2.0)
+   Source: https://github.com/vagran/dxf-viewer
+
+2. three.js
+   Copyright (c) 2010-2026 three.js authors
+   License: MIT
+   Source: https://github.com/mrdoob/three.js
+
+3. opentype.js
+   Copyright (c) Frederik De Bleser and contributors
+   License: MIT
+   Source: https://github.com/opentypejs/opentype.js
+
+4. earcut
+   Copyright (c) Mapbox
+   License: ISC
+   Source: https://github.com/mapbox/earcut
+
+5. loglevel
+   Copyright (c) Tim Perry
+   License: MIT
+   Source: https://github.com/pimterry/loglevel
+
+6. LibreDWG / @mlightcad/libredwg-web
+   Copyright (c) Free Software Foundation and LibreDWG contributors
+   Copyright (c) MLight Lee (WebAssembly bindings)
+   License: GNU General Public License v3.0 (GPL-3.0)
+   Source: https://github.com/LibreDWG/libredwg
+   Source: https://github.com/mlightcad/libredwg-web
+
+   Because this component is licensed under GPL-3.0, the combined plugin distribution is
+   released under GPL-3.0 as well. See LICENSE.txt in this package.
+
+7. Microsoft.Web.WebView2
+   Copyright (c) Microsoft Corporation
+   License terms are distributed with the NuGet package.
+
+Text glyphs are rendered with fonts already installed on the user's machine
+(for example Segoe UI and SimHei). No font binaries are redistributed with this plugin.
