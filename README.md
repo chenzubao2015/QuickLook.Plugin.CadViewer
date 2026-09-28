@@ -1,5 +1,7 @@
 # QuickLook.Plugin.CadViewer
 
+**English** | [中文说明](README.zh-CN.md)
+
 A **QuickLook** plugin that previews 2D CAD drawings — **DXF** and **DWG** — with a simple
 spacebar, without opening AutoCAD and without uploading anything anywhere.
 

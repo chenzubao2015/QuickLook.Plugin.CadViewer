@@ -1,5 +1,7 @@
 # QuickLook.Plugin.CadViewer
 
+[English](README.md) | **中文**
+
 一个 [QuickLook](https://github.com/QL-Win/QuickLook) 插件：按空格即可预览 **DXF / DWG** 二维图纸，
 不用打开 AutoCAD，也不会上传任何文件。
 
