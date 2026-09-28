@@ -25,6 +25,9 @@ timing*.mjs
 bundletest.js
 bundletest.out.js
 
+# Local scratch files produced while preparing releases
+topics*.json
+
 # IDE
 .vs/
 .vscode/
